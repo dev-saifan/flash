@@ -28,3 +28,14 @@ To instantly download the latest binary release and install it to `/usr/local/bi
 
 ```bash
 sudo curl -L https://github.com/void556/flash/releases/latest/download/flash -o /usr/local/bin/flash && sudo chmod +x /usr/local/bin/flash
+
+---
+
+## 🛠️ Compiling Locally From Source
+
+If you want to modify the source code or compile the standalone binary yourself, you can build it using Python and Nuitka.
+
+### Prerequisites
+Make sure you have Python and Nuitka installed on your system:
+```bash
+pip install nuitka
