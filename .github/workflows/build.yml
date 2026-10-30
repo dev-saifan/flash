@@ -37,7 +37,7 @@ jobs:
           --standalone \
           --onefile \
           --output-filename=flash \
-          flash
+          flash.py
 
     - name: Create GitHub Release and Upload Asset
       uses: softprops/action-gh-release@v2
