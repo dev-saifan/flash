@@ -36,7 +36,7 @@ jobs:
           --standalone \
           --onefile \
           --output-filename=flash \
-          flash.py
+          flash
 
     - name: Upload Binary Artifact
       uses: actions/upload-artifact@v4
