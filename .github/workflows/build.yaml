@@ -1,0 +1,45 @@
+name: Build Binary
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install System Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc ccache patchelf
+
+    - name: Install Nuitka
+      run: |
+        python -m pip install --upgrade pip
+        pip install nuitka
+
+    - name: Compile with Nuitka
+      run: |
+        python -m nuitka \
+          --standalone \
+          --onefile \
+          --output-filename=flash \
+          flash.py
+
+    - name: Upload Binary Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: flash-linux-amd64
+        path: flash
