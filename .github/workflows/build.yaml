@@ -1,15 +1,16 @@
-name: Build Binary
+name: Release Flash Binary
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-  workflow_dispatch:
+    tags:
+      - 'v*' # Triggers automatically when you push a tag like v1.0.0
 
 jobs:
-  build:
+  build-and-release:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # Required to create a GitHub Release and upload assets
 
     steps:
     - name: Checkout repository
@@ -23,7 +24,7 @@ jobs:
     - name: Install System Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y gcc ccache patchelf
+        sudo apt-get install -y gcc patchelf
 
     - name: Install Nuitka
       run: |
@@ -35,11 +36,12 @@ jobs:
         python -m nuitka \
           --standalone \
           --onefile \
-          --output-filename=flash \
+          --output-filename=flash-linux-amd64 \
           flash
 
-    - name: Upload Binary Artifact
-      uses: actions/upload-artifact@v4
+    - name: Create GitHub Release and Upload Asset
+      uses: softprops/action-gh-release@v2
       with:
-        name: flash-linux-amd64
-        path: flash
+        files: flash-linux-amd64
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
