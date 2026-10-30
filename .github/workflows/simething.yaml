@@ -36,7 +36,7 @@ jobs:
         python -m nuitka \
           --standalone \
           --onefile \
-          --output-filename=flash-linux-amd64 \
+          --output-filename=flash \
           flash
 
     - name: Create GitHub Release and Upload Asset
